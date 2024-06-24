@@ -10,7 +10,7 @@
 
 ## Descrição do Projeto
 
-Este projeto, desenvolvido para a disciplina de Estrutura de Dados II, sob orientação do professor Dr. Denis Gonçalves Cople, tem como objetivo a implementação e análise de algoritmos fundamentais em C. O foco principal é o entendimento da complexidade de tempo dos algoritmos através de exemplos práticos e gráficos gerados por código Python.
+Este projeto, desenvolvido para a disciplina de Estrutura de Dados II, sob orientação do professor Dr. Denis Gonçalves Cople, tem como objetivo a implementação e análise de algoritmos fundamentais em C. O principal objetivo deste trabalho é proporcionar uma prática intensiva, com ênfase na aplicação de problemas do mundo real, visando familiarizar os alunos com algoritmos e estruturas de dados.
 
 ## Conteúdo
 
