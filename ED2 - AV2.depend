@@ -1,0 +1,26 @@
+# depslib dependency file v1.0
+1718117411 source:c:\users\gabri\desktop\ed2\ed2 - av2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	<locale.h>
+
+1718121490 source:c:\users\gabri\desktop\ed2\ed2 - av2\q1.c
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	<locale.h>
+
+1718121490 source:c:\users\gabri\desktop\ed2\ed2 - av2\q2.c
+	<stdio.h>
+	<stdbool.h>
+
+1718040686 source:c:\users\gabri\desktop\ed2\ed2 - av2\q3.c
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+
+1718119645 source:c:\users\gabri\desktop\ed2\ed2 - av2\q4.c
+	<stdio.h>
+	<stdlib.h>
+

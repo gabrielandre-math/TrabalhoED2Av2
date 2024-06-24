@@ -1,0 +1,3 @@
+C:/Users/gabri/OneDrive/Documentos/ED2 - AV2/ED2 - AV2/cmake-build-debug/CMakeFiles/ED2___AV2.dir
+C:/Users/gabri/OneDrive/Documentos/ED2 - AV2/ED2 - AV2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/gabri/OneDrive/Documentos/ED2 - AV2/ED2 - AV2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
