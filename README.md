@@ -63,7 +63,7 @@ Algoritmo de busca em profundidade para encontrar um caminho em um labirinto.
 - **imprimirCaminho**: Imprime o caminho encontrado.
 - **ehValido**: Verifica se uma posição no labirinto é válida.
 - **dfs**: Implementa o algoritmo DFS.
-- **main2**: Inicializa a posição inicial, imprime o labirinto e executa o DFS.
+- **Q4**: Inicializa a posição inicial, imprime o labirinto e executa o DFS.
 
 ## Contribuições
 
