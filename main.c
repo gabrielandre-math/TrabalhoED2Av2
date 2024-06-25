@@ -16,6 +16,6 @@ int main() {
     Q3();
 
     printf("\n\nQ4: \n");
-    Q3();
+    Q4();
     return 0;
 }

@@ -1,22 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <unistd.h>  // Para a função getcwd
 
 #define MAX_VERTICES 100
 
 // Função para ler a matriz de adjacências do arquivo CSV
-int lerMatrizAdjacencias(char *nomeArquivo, int matriz[][MAX_VERTICES], int *numVertices) {
+int lerMatrizAdjacencias(const char *nomeArquivo, int matriz[][MAX_VERTICES], int *numVertices) {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+        printf("Erro ao abrir o arquivo: %s\n", nomeArquivo);
+        perror("Erro");
         return -1;
     }
 
-    fscanf(arquivo, "%d", numVertices);
+    if (fscanf(arquivo, "%d", numVertices) != 1) {
+        printf("Erro ao ler o número de vértices do arquivo.\n");
+        fclose(arquivo);
+        return -1;
+    }
 
     for (int i = 0; i < *numVertices; i++) {
         for (int j = 0; j < *numVertices; j++) {
-            fscanf(arquivo, "%d,", &matriz[i][j]);
+            if (fscanf(arquivo, "%d,", &matriz[i][j]) != 1) {
+                printf("Erro ao ler o valor da matriz de adjacências na posição (%d, %d).\n", i, j);
+                fclose(arquivo);
+                return -1;
+            }
         }
     }
 
@@ -25,7 +35,7 @@ int lerMatrizAdjacencias(char *nomeArquivo, int matriz[][MAX_VERTICES], int *num
 }
 
 // Função para encontrar a aresta de menor peso conectada a uma subárvore
-int encontrarMinimo(int pesos[], int incluido[], int numVertices) {
+int encontrarMinimo(const int pesos[], const int incluido[], int numVertices) {
     int min = INT_MAX, minIndex;
     for (int v = 0; v < numVertices; v++) {
         if (incluido[v] == 0 && pesos[v] < min) {
@@ -67,7 +77,7 @@ void primMST(int matriz[][MAX_VERTICES], int numVertices) {
 
     // Imprime a árvore geradora mínima
     printf("Aresta \t Peso\n");
-    for (int i = 0; i < numVertices; i++) {
+    for (int i = 1; i < numVertices; i++) { // Corrigi a inicialização do loop para começar de 1
         if (pais[i] != -1) {
             printf("%d - %d \t %d \n", pais[i], i, matriz[i][pais[i]]);
         }
@@ -78,7 +88,18 @@ int Q3() {
     int matrizAdjacencias[MAX_VERTICES][MAX_VERTICES];
     int numVertices;
 
-    char nomeArquivo[] = "grafo.csv";
+    char cwd[1024];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printf("Diretório de trabalho atual: %s\n", cwd);
+    } else {
+        perror("getcwd() error");
+        return -1;
+    }
+
+    // Assumindo que o arquivo grafo.csv está no diretório raiz do projeto
+    char nomeArquivo[1024];
+    snprintf(nomeArquivo, sizeof(nomeArquivo), "%s/../grafo.csv", cwd);
+
     if (lerMatrizAdjacencias(nomeArquivo, matrizAdjacencias, &numVertices) != 0) {
         return -1;
     }

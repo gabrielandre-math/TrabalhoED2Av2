@@ -1,123 +1,102 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-#define MAX_LINHAS 22
-#define MAX_COLUNAS 9
+#define MAX_LINHAS 24
+#define MAX_COLUNAS 11
 #define PAREDE -1
-#define LIVRE 0
-#define VISITADO 2
+#define VISITADO -2
 #define A 2
 #define B -3
 
-// Estrutura para representar uma posição no labirinto
-typedef struct {
-    int linha;
-    int coluna;
-} Posicao;
-
-// Labirinto exemplo
 int labirinto[MAX_LINHAS][MAX_COLUNAS] = {
-    { A,  0,  0,  0,  0,  0,  1, -2,  3},
-    { 0,  PAREDE,  PAREDE,  PAREDE,  PAREDE,  PAREDE,  0,  0,  PAREDE},
-    { 4,  0,  0,  0,  0,  5, -6,  7,  8},
-    { 0,  PAREDE,  PAREDE,  PAREDE,  PAREDE,  0,  PAREDE,  PAREDE,  0},
-    { 9, 10, 11, 12, 13,  0, 14,  0, 15},
-    { 0,  0,  PAREDE,  0,  PAREDE,  0,  PAREDE,  PAREDE,  0},
-    { 0, -16,  0, 17, -18, 19,  0, 20, -21},
-    { 0,  PAREDE,  PAREDE,  PAREDE,  0,  PAREDE,  PAREDE,  0,  PAREDE},
-    { 0, -22,  0, 23, -24, 25, -26, 27, 28},
-    { 0,  PAREDE,  PAREDE,  0,  PAREDE,  0,  0,  PAREDE,  0},
-    {29, 30, -31, 32, -33, 34,  0, -35,  0},
-    { PAREDE,  0,  0,  PAREDE,  0,  PAREDE,  0,  0,  0},
-    {36,  0,  0, 37, 38, 39, 40,  0,  0},
-    { 0,  0,  0,  0,  PAREDE,  0,  PAREDE,  0,  0},
-    { 0, -0, -0, PAREDE, 42, PAREDE, 44, 45, 46},
-    { 0,  0,  0, PAREDE, PAREDE, PAREDE,  0, PAREDE, PAREDE},
-    { 0,  0, -47,  0,  0, 48, 49,  0, 50},
-    { 0,  0,  0, PAREDE, PAREDE,  0, PAREDE, PAREDE,  0},
-    { 0, 51, 52, 53,  0, 54, 55, 56, -B},
-    { 0,  0,  0,  0,  PAREDE, PAREDE,  0, PAREDE,  0},
-    {57, 58, -59, -60,  0,  0, 61, -62, 63}
+        {PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE},
+        {PAREDE, A,      0,      0,      0,      0,      1,      PAREDE, 3,      PAREDE, PAREDE},
+        {PAREDE, 6,      PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, 0,      0,      PAREDE, PAREDE},
+        {PAREDE, 4,      0,      0,      0,      0,      5,     PAREDE, 7,      8,      PAREDE},
+        {PAREDE, 0,      PAREDE, PAREDE, PAREDE, PAREDE, 0,      PAREDE, PAREDE, 0,      PAREDE},
+        {PAREDE, 9,     10,     PAREDE, 12,     13,     0,      PAREDE, 14,     0,      15,     PAREDE},
+        {PAREDE, 0,      0,      PAREDE, 0,      PAREDE, 0,      PAREDE, PAREDE, 0,      PAREDE},
+        {PAREDE, 0,     PAREDE, 0,      17,    PAREDE, 19,     0,      20,    PAREDE, PAREDE},
+        {PAREDE, 0,      PAREDE, PAREDE, PAREDE, 0,      PAREDE, PAREDE, 0,      PAREDE, PAREDE},
+        {PAREDE, 0,     PAREDE, 0,      23,    PAREDE, 25,    PAREDE, PAREDE, 28,     PAREDE},
+        {PAREDE, 0,      PAREDE, PAREDE, 0,      PAREDE, 0,      0,      PAREDE, 0,      PAREDE},
+        {PAREDE, 29,     30,    PAREDE, 32,    PAREDE, 34,     0,     PAREDE, 0,      PAREDE},
+        {PAREDE, PAREDE, 0,      0,      PAREDE, 0,      PAREDE, 0,      0,      0,      PAREDE},
+        {PAREDE, 36,     0,      0,      37,     38,     39,     40,     0,      0,      PAREDE},
+        {PAREDE, 0,      0,      0,      0,      PAREDE, 0,      PAREDE, 0,      0,      PAREDE},
+        {PAREDE, 0,      0,     PAREDE, 42,     PAREDE, 44,     45,     46,     0,      PAREDE},
+        {PAREDE, 0,      0,      0,      PAREDE, PAREDE, PAREDE, 0,      PAREDE, PAREDE, PAREDE},
+        {PAREDE, 0,      0,     PAREDE, 0,      0,      48,     49,     0,      50,     PAREDE},
+        {PAREDE, 0,      0,      0,      PAREDE, PAREDE, 0,      PAREDE, PAREDE, 0,      PAREDE},
+        {PAREDE, 0,      51,     52,     53,     0,      54,     55,     56,     0,      B},
+        {PAREDE, 0,      0,      0,      0,      PAREDE, PAREDE, 0,      PAREDE, 0,      PAREDE},
+        {PAREDE, 57,     58,    PAREDE, PAREDE, 0,      0,      61,    PAREDE, 63,     PAREDE},
+        {PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE, PAREDE}
 };
 
-// Função para imprimir o labirinto
-void imprimirLabirinto() {
+int dentroDosLimites(int x, int y) {
+    return (x >= 0 && x < MAX_LINHAS && y >= 0 && y < MAX_COLUNAS);
+}
+
+void imprimirLabirinto(int caminho[MAX_LINHAS][MAX_COLUNAS]) {
+    printf("\nLabirinto:\n\n");
     for (int i = 0; i < MAX_LINHAS; i++) {
         for (int j = 0; j < MAX_COLUNAS; j++) {
-            printf("%3d ", labirinto[i][j]);
+            if (labirinto[i][j] == PAREDE) {
+                printf("### ");
+            } else if (caminho[i][j] != 0) {
+                printf(" ** ");
+            } else if (labirinto[i][j] == A) {
+                printf(" A  ");
+            } else if (labirinto[i][j] == B) {
+                printf(" B  ");
+            } else {
+                printf("%02d  ", labirinto[i][j]);
+            }
         }
         printf("\n");
     }
-}
-
-// Função para imprimir o caminho encontrado
-void imprimirCaminho(Posicao caminho[], int passos) {
-    for (int i = 0; i < passos; i++) {
-        printf("(%d, %d) ", caminho[i].linha, caminho[i].coluna);
-    }
     printf("\n");
 }
-// Verifica se a posição é válida e livre para mover
-int ehValido(int linha, int coluna) {
-    if (linha >= 0 && linha < MAX_LINHAS && coluna >= 0 && coluna < MAX_COLUNAS && labirinto[linha][coluna] != PAREDE && labirinto[linha][coluna] != VISITADO) {
-        return 1;
-    }
-    return 0;
-}
 
-// Algoritmo DFS para encontrar o caminho no labirinto
-int dfs(int linha, int coluna, Posicao caminho[], int passos) {
-    // Se chegou no destino (ponto B)
-    if (labirinto[linha][coluna] == B) {
-        imprimirCaminho(caminho, passos);
+int resolverLabirinto(int x, int y, int caminho[MAX_LINHAS][MAX_COLUNAS], int dir) {
+    if (!dentroDosLimites(x, y) || labirinto[x][y] == PAREDE || labirinto[x][y] == VISITADO || caminho[x][y] != 0) {
+        return 0;
+    }
+
+    caminho[x][y] = dir;
+
+    if (labirinto[x][y] == B) {
         return 1;
     }
 
-    // Direções para mover: esquerda, direita, cima, baixo
-    int dx[] = {0, 0, -1, 1};
-    int dy[] = {-1, 1, 0, 0};
+    labirinto[x][y] = VISITADO; // Marca a célula como visitada
 
-    // Marca a posição atual como visitada
-    labirinto[linha][coluna] = VISITADO;
-    caminho[passos].linha = linha;
-    caminho[passos].coluna = coluna;
-    passos++;
-
-    // Tenta todas as direções possíveis
-    for (int i = 0; i < 4; i++) {
-        int novaLinha = linha + dx[i], novaColuna = coluna + dy[i];
-
-        // Se a nova posição é válida e livre
-        if (ehValido(novaLinha, novaColuna)) {
-            if (dfs(novaLinha, novaColuna, caminho, passos)) {
-                return 1;
-            }
-        }
+    if (resolverLabirinto(x, y + 1, caminho, 2) || resolverLabirinto(x + 1, y, caminho, 3) ||
+        resolverLabirinto(x, y - 1, caminho, 4) || resolverLabirinto(x - 1, y, caminho, 1)) {
+        return 1;
     }
 
-    // Backtracking: desmarca a posição atual e volta
-    passos--;
-    labirinto[linha][coluna] = LIVRE;
-
+    caminho[x][y] = 0;  // Limpa o caminho se não encontrar uma solução
+    labirinto[x][y] = 0; // Desmarca a célula como visitada
     return 0;
 }
 
-int main2() {
-    // Posição inicial (ponto A)
-    Posicao inicial = {0, 0};
+int Q4() {
+    int startX = 1;
+    int startY = 1;
+    int caminho[MAX_LINHAS][MAX_COLUNAS] = {0};
 
-    // Inicializa array para armazenar o caminho
-    Posicao caminho[MAX_LINHAS * MAX_COLUNAS];
+    printf("Labirinto original:\n");
+    imprimirLabirinto(caminho);
 
-    // Imprime o labirinto para verificação
-    printf("Labirinto:\n");
-    imprimirLabirinto();
-
-    // Executa a busca em profundidade (DFS) a partir do ponto A
-    printf("\nCaminho encontrado:\n");
-    if (!dfs(inicial.linha, inicial.coluna, caminho, 0)) {
-        printf("Não há caminho possível.\n");
+    if (resolverLabirinto(startX, startY, caminho, 0)) {
+        printf("Caminho encontrado!\n");
+    } else {
+        printf("Não há caminho para a saída.\n");
     }
+
+    printf("Labirinto após busca:\n");
+    imprimirLabirinto(caminho);
 
     return 0;
 }

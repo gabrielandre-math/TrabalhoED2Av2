@@ -24,7 +24,7 @@ void adicionarAresta(int de, int para, int distancia) {
     grafo[de].quantidadeArestas++;
 }
 
-int menorDistancia(int dist[], int sptSet[]) {
+int menorDistancia(const int dist[], const int sptSet[]) {
     int min = INT_MAX, minIndex;
     for (int v = 1; v <= NODES; v++) {
         if (!sptSet[v] && dist[v] <= min) {

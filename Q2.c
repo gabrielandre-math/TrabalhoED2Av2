@@ -4,7 +4,7 @@
 #define V 16 // Número total de vértices
 
 // Função para verificar se é seguro colorir um vértice com uma cor específica
-bool Seguro(int v, int grafo[V][V], int cor[], int c) {
+bool Seguro(int v, int grafo[V][V], const int cor[], int c) {
     for (int i = 0; i < V; i++)
         if (grafo[v][i] && c == cor[i])
             return false;
